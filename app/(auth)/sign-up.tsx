@@ -8,6 +8,7 @@ import CustomButton from '@/components/CustomButton';
 import InputField from '@/components/InputField';
 import { icons, images } from '@/constants';
 import OAuth from '@/components/OAuth';
+import { fetchAPI } from '@/lib/fetch';
 
 const SignUp = () => {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -48,6 +49,17 @@ const SignUp = () => {
         code: verification.code,
       });
       if (completeSignUp.status === 'complete') {
+        await fetchAPI('http://10.0.2.2:3000/api/users', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: form.name,
+            email: form.email,
+            clerkId: completeSignUp.createdUserId,
+          }),
+        });
         await setActive({ session: completeSignUp.createdSessionId });
         setVerification({
           ...verification,
@@ -61,8 +73,6 @@ const SignUp = () => {
         });
       }
     } catch (err: any) {
-      // See https://clerk.com/docs/custom-flows/error-handling
-      // for more info on error handling
       setVerification({
         ...verification,
         error: err.errors[0].longMessage,
