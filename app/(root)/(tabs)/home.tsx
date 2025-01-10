@@ -1,3 +1,4 @@
+import React from 'react';
 import { useUser } from '@clerk/clerk-expo';
 import { useAuth } from '@clerk/clerk-expo';
 import { router } from 'expo-router';
@@ -13,9 +14,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import GoogleTextInput from '@/components/GoogleTextInput';
 import RideCard from '@/components/RideCard';
+import Map from '@/components/Map';
 import { icons, images } from '@/constants';
 import { Ride } from '@/types/type';
-import React from 'react';
 
 const Home = () => {
   const { user } = useUser();
@@ -164,6 +165,9 @@ const Home = () => {
               <Text className="text-xl font-JakartaBold mt-5 mb-3">
                 Your current location
               </Text>
+              <View className="flex flex-row items-center bg-transparent h-[300px]">
+                <Map />
+              </View>
             </>
           </>
         }
